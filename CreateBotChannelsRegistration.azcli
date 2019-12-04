@@ -1,0 +1,38 @@
+az login
+
+# Replace "MyDLSBugBash" with a resource group name of your choosing.
+az group create --location "westus" --name "MyDLSBugBash"
+
+# {
+#   "id": "/subscriptions/SUBSCRIPTION_GUID/resourceGroups/MyDLSBugBash",
+#   "location": "westus",
+#   "managedBy": null,
+#   "name": "MyDLSBugBash",
+#   "properties": {
+#     "provisioningState": "Succeeded"
+#   },
+#   "tags": null,
+#   "type": null
+# }
+
+# Create an AAD App Registration. You will need the output appId and password for creating your Bot Channels Registration
+# Replace "MyDLSBugBashBot" with a name of your choosing.
+# Replace "AtLeastSixteenCharacters_0" with a name of your choosing.
+az ad app create --display-name "MyDLSBugBashBot" --password "AtLeastSixteenCharacters_0" --available-to-other-tenants
+
+
+# Replace "TheAppIdFromPreviousStep" with the actual AppId from the previous step.
+az bot create --resource-group "MyDLSBugBash" --location "westus" --kind "registration" --sku "S1" --name "MyDLSBugBashBot" --appid "TheAppIdFromPreviousStep" --password "AtLeastSixteenCharacters_0"
+
+# Save the "id" value for an easy copy-paste to your Bot resource:
+# An example id value is as follows:
+# /subscriptions/703aa115-c84e-42f8-9b31-85938c67def9/resourceGroups/MyDLSBugBash/providers/Microsoft.BotService/botServices/MyDLSBugBashBot
+
+# Those in the Microsoft Tenant can replace prefix the path with "https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource" to be able to directly go to the resource in a web browser. E.g.:
+# https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/703aa115-c84e-42f8-9b31-85938c67def9/resourceGroups/MyDLSBugBash/providers/Microsoft.BotService/botServices/MyDLSBugBashBot
+
+# Currently, Direct Line Speech is not configurable from `az bot`, so you will need to navigate to your bot in the Azure Portal to add the channel.
+# For more information, see: https://docs.microsoft.com/en-us/azure/bot-service/bot-service-channel-connect-directlinespeech?view=azure-bot-service-4.0
+
+# To update your bot's endpoint, run the following command and replace "https://bing.com/api/messages" with the appropriate value
+az bot update --resource-group "MyDLSBugBash" --name "MyDLSBugBashBot" --endpoint "https://bing.com/api/messages"

@@ -1,0 +1,45 @@
+az login
+
+# Replace "MyDLSBugBash" with a resource group name of your choosing.
+az group create --location "westus" --name "MyDLSBugBash"
+
+# {
+#   "id": "/subscriptions/SUBSCRIPTION_GUID/resourceGroups/MyDLSBugBash",
+#   "location": "westus",
+#   "managedBy": null,
+#   "name": "MyDLSBugBash",
+#   "properties": {
+#     "provisioningState": "Succeeded"
+#   },
+#   "tags": null,
+#   "type": null
+# }
+
+# Replace "MySpeechResource" with a name of your choosing.
+# There are two accepted values for --sku: "F0", "S0"
+# The following command will prompt you to accept the Cognitive Services terms and conditions.
+# You will need to save the value for the "endpoint" to configure your Web Chat with Direct Line Speech instance.
+az cognitiveservices account create --resource-group "MyDLSBugBash" --name "MySpeechResource" --location "westus" --kind "SpeechServices" --sku "S0"
+
+# {
+#   "endpoint": "https://westus.api.cognitive.microsoft.com/sts/v1.0/issuetoken",
+#   "etag": "\"67001b8b-0000-0700-0000-5de825e80000\"",
+#   "id": "/subscriptions/SUBSCRIPTION_GUID/resourceGroups/MyDLSBugBash/providers/Microsoft.CognitiveServices/accounts/MySpeechResource",
+#   "internalId": "3903f4f1437a4920afce9da43e4a5cd0",
+#   "kind": "SpeechServices",
+#   "location": "westus",
+#   "name": "MySpeechResource",
+#   "provisioningState": "Succeeded",
+#   "resourceGroup": "MyDLSBugBash",
+#   "sku": {
+#     "name": "S0",
+#     "tier": null
+#   },
+#   "tags": null,
+#   "type": "Microsoft.CognitiveServices/accounts"
+# }
+
+# To get your keys, run the following command.
+az cognitiveservices account keys list --resource-group "MyDLSBugBash" --name "MySpeechResource"
+
+# Keep your endpoint and a key available to configure your Web Chat with Direct Line Speech instance.

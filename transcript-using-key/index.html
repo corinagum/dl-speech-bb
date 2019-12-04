@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Web Chat: Direct Line Speech using subscription key</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="assets/webchat.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      #webchat {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="webchat" role="main"></div>
+    <script>
+      'use strict';
+
+      // You can specify your key here, or use query parameters ?s=YOUR_COGNITIVE_SERVICE_KEY
+      const COGNITIVE_SERVICE_KEY = 'INSERT_YOUR_COGNITIVE_SERVICE_KEY';
+      const COGNITIVE_SERVICE_REGION = 'westus2';
+
+      (async function() {
+        const searchParams = new URLSearchParams(location.search);
+        const adapters = await window.WebChat.createDirectLineSpeechAdapters({
+          fetchCredentials: () => ({
+            region: searchParams.get('r') || COGNITIVE_SERVICE_REGION,
+            subscriptionKey: searchParams.get('s') || COGNITIVE_SERVICE_KEY
+          })
+        });
+
+        window.WebChat.renderWebChat(
+          {
+            ...adapters
+          },
+          document.getElementById('webchat')
+        );
+
+        document.querySelector('#webchat > *').focus();
+      })().catch(err => console.error(err));
+    </script>
+  </body>
+</html>
